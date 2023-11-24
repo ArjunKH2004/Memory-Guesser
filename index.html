@@ -57,13 +57,21 @@
       border: 1px solid rgb(2, 164, 2);
     }
 
-    #congratulations-message {
+    #congratulations-message, #game-over-message {
       display: none;
+      color: rgb(2, 164, 2);
+      font-weight: bold;
+    }
+    #remaining-tries{
+      
+      color: rgb(2, 164, 2);
+      font-weight: bold;
     }
 
     .container {
       justify-content: space-between;
     }
+   
   </style>
 </head>
 <body>
@@ -75,13 +83,16 @@
 
 <div class="content">
   <div class="container">
-    <h2>MEMORY GUESSER GAME</h2><br>
-    <div class="row" id="game-board"></div>
-    
-    <!-- Add this div for the congratulatory message -->
-    <div id="congratulations-message" class="text-center mt-3">
-      <h3>Congratulations! You've matched all pairs!</h3>
+    <h2>MEMORY GUESSER GAME by K H Arjun</h2><br>
+    <div class="text-center mt-3">
+      <p id="remaining-tries">Remaining Tries: 10</p>
+      <p id="game-over-message">Game Over! You've run out of tries.</p>
+      <p id="congratulations-message">Congratulations! You've matched all pairs!</p>
+      <button class="btn btn-primary" onclick="changeDifficulty('easy')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Easy</button>
+      <button class="btn btn-warning" onclick="changeDifficulty('normal')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Normal</button>
+      <button class="btn btn-danger" onclick="changeDifficulty('hard')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Hard</button>
     </div>
+    <div class="row" id="game-board"></div>
   </div>
 </div>
 
@@ -89,30 +100,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
-  // Your existing JavaScript code for the memory guesser game
-  // ...
+  let difficulty = 'normal';
+  const difficultyTries = {
+    'easy': 15,
+    'normal': 10,
+    'hard': 5
+  };
+  let remainingTries = difficultyTries[difficulty];
+  let firstCard = null;
+  let matchedPairs = 0;
 
-  // Images for the game
   const images = [
-    'batman.jpg',
-    'ca.jpg',
-    'ds.jpg',
-    'flash.jpg',
-    'loki.jpg',
-    'superman.jpg',
-    'mk.jpg',
-    'thor.jpg',
-    'batman.jpg',
-    'ca.jpg',
-    'ds.jpg',
-    'flash.jpg',
-    'loki.jpg',
-    'superman.jpg',
-    'mk.jpg',
-    'thor.jpg'
+    'batman.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
+    'loki.jpg', 'superman.jpg', 'mk.jpg', 'thor.jpg',
+    'batman.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
+    'loki.jpg', 'superman.jpg', 'mk.jpg', 'thor.jpg'
   ];
 
-  // Shuffle function to randomize the order of images
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
     while (currentIndex !== 0) {
@@ -125,31 +129,32 @@
     return array;
   }
 
-  // Function to initialize the game
   function initializeGame() {
     const shuffledImages = shuffle(images);
-
     const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = ''; // Clear the game board
 
     shuffledImages.forEach((image, index) => {
       const card = document.createElement('div');
-      card.classList.add('card', 'col-3'); // Updated class to col-3
+      card.classList.add('card', 'col-3');
       card.setAttribute('data-index', index);
       card.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
-      card.addEventListener('click', flipCard);
+      card.addEventListener('click', function() {
+        flipCard.call(this);
+      });
       gameBoard.appendChild(card);
     });
   }
 
-  // Function to handle card flipping
-  let firstCard = null;
-  let matchedPairs = 0;
-
   function flipCard() {
+    if (remainingTries === 0) {
+      return; // If no more tries left, do nothing
+    }
+
     const index = this.getAttribute('data-index');
     this.innerHTML = `<img src="${images[index]}" class="card-img-top" alt="Card">`;
 
-    if (firstCard === null) {
+    if (!firstCard) {
       firstCard = this;
     } else {
       setTimeout(() => {
@@ -157,21 +162,40 @@
           // If cards don't match, flip them back
           this.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
           firstCard.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
+          remainingTries--;
+
+          // Update remaining tries display
+          document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
         } else {
-          // If cards match, increment matchedPairs
           matchedPairs++;
           if (matchedPairs === images.length / 2) {
-            // If all pairs are matched, show congratulatory message
             document.getElementById('congratulations-message').style.display = 'block';
           }
         }
+
+        if (remainingTries === 0) {
+          document.getElementById('game-over-message').style.display = 'block';
+        }
+
         firstCard = null;
       }, 1000);
     }
   }
 
-  // Initialize the game when the page is loaded
-  document.addEventListener('DOMContentLoaded', initializeGame);
+  function changeDifficulty(newDifficulty) {
+    difficulty = newDifficulty;
+    remainingTries = difficultyTries[difficulty];
+    document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
+    document.getElementById('game-over-message').style.display = 'none';
+    document.getElementById('congratulations-message').style.display = 'none';
+    matchedPairs = 0;
+    initializeGame();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeGame();
+    document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
+  });
 </script>
 
 </body>
