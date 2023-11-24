@@ -7,52 +7,81 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <style>
     body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    video {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      background-color: #f8f9fa;
+      color: white;
     }
+
+    /* Your existing styles */
     .card {
       width: 150px;
       height: 150px;
       cursor: pointer;
       overflow: hidden;
-      border: 2px solid black;
       padding-top: 5px;
       padding-bottom: 5px;
+      background-color: black;
     }
+
     .card img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* or "contain" based on your preference */
+      object-fit: contain;
     }
+
     h2 {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      color: white;
+      color: rgb(2, 164, 2);
       background-color: black;
       padding: 15px 20px;
-      border: 1px solid red;
+      border: 1px solid rgb(2, 164, 2);
     }
+
     #congratulations-message {
       display: none;
     }
-    .container{
+
+    .container {
       justify-content: space-between;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>MEMORY GUESSER GAME</h2><br>
-  <div class="row" id="game-board"></div>
-  
-  <!-- Add this div for the congratulatory message -->
-  <div id="congratulations-message" class="text-center mt-3">
-    <h3>Congratulations! You've matched all pairs!</h3>
+<video autoplay muted loop>
+  <source src="bg2.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div class="content">
+  <div class="container">
+    <h2>MEMORY GUESSER GAME</h2><br>
+    <div class="row" id="game-board"></div>
+    
+    <!-- Add this div for the congratulatory message -->
+    <div id="congratulations-message" class="text-center mt-3">
+      <h3>Congratulations! You've matched all pairs!</h3>
+    </div>
   </div>
 </div>
 
@@ -60,6 +89,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
+  // Your existing JavaScript code for the memory guesser game
+  // ...
+
   // Images for the game
   const images = [
     'batman.jpg',
