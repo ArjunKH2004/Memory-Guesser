@@ -31,7 +31,7 @@
       color: white;
     }
 
-    /* Your existing styles */
+    
     .card {
       width: 150px;
       height: 150px;
@@ -40,7 +40,7 @@
       padding-top: 5px;
       padding-bottom: 5px;
       background-color: black;
-      transition: opacity 0.5s ease; /* Add fade transition */
+      transition: opacity 0.5s ease; 
     }
 
     .card img {
@@ -65,11 +65,16 @@
       -webkit-text-stroke: 1px rgb(51, 84, 51);
       font-size: 40px;
     }
-    #remaining-tries{
+    #remaining-tries, #score {
       color: rgb(2, 164, 2);
       font-weight: bold;
       font-size: 40px;
       -webkit-text-stroke: 1px rgb(51, 84, 51);
+    }
+   
+    /* Bold text for difficulty buttons */
+    .btn-primary, .btn-warning, .btn-danger {
+      font-weight: bold;
     }
 
     .container {
@@ -89,6 +94,7 @@
       <h2>MEMORY GUESSER GAME<br>by K H Arjun [powered by ChatGPT XD]</h2><br>
       <div class="text-center mt-3">
         <p id="remaining-tries">Remaining Tries: 10</p>
+        <p id="score">Score: 0</p>
         <p id="game-over-message">Game Over! You've run out of tries.</p>
         <p id="congratulations-message">Congratulations! You've matched all pairs!</p>
         <button class="btn btn-primary btn-lg" onclick="changeDifficulty('easy')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Easy</button>
@@ -112,6 +118,7 @@
     let remainingTries = difficultyTries[difficulty];
     let firstCard = null;
     let matchedPairs = 0;
+    let score = 0;
 
     const images = [
       'batman.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
@@ -165,12 +172,19 @@
             // If cards don't match, flip them back
             this.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
             firstCard.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
-            remainingTries--;
 
             // Update remaining tries display
+            remainingTries--;
             document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
+
+            // Deduct 1 point for a mismatch
+            score = Math.max(0, score - 1);
+            updateScoreDisplay();
           } else {
             matchedPairs++;
+            score += 2; // Matching pair gives 2 points
+            updateScoreDisplay();
+
             if (matchedPairs === images.length / 2) {
               document.getElementById('congratulations-message').style.display = 'block';
             }
@@ -185,6 +199,10 @@
       }
     }
 
+    function updateScoreDisplay() {
+      document.getElementById('score').innerText = `Score: ${score}`;
+    }
+
     function changeDifficulty(newDifficulty) {
       difficulty = newDifficulty;
       remainingTries = difficultyTries[difficulty];
@@ -192,12 +210,15 @@
       document.getElementById('game-over-message').style.display = 'none';
       document.getElementById('congratulations-message').style.display = 'none';
       matchedPairs = 0;
+      score = 0; // Reset score on difficulty change
+      updateScoreDisplay();
       initializeGame();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       initializeGame();
       document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
+      updateScoreDisplay();
     });
   </script>
 
