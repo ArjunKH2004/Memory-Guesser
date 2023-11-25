@@ -59,7 +59,6 @@
       border: 5px solid rgb(2, 164, 2);
       border-radius: 100px;
       box-shadow: 0 0 100px rgb(2, 164, 2);
-     
     }
 
     #congratulations-message,
@@ -84,8 +83,27 @@
     .btn-warning,
     .btn-danger {
       font-weight: bold;
-      font-size: 24px; /* Adjust the font size */
-      padding: 15px 30px; /* Adjust the padding */
+      font-size: 24px;
+      padding: 15px 30px;
+      background-color: black;
+      color: rgb(2, 164, 2);
+      border-color: rgb(2, 164, 2);
+      box-shadow: 0 0 1px transparent; /* Initial shadow strength for all buttons */
+      transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow changes */
+    }
+
+    /* Hover state for difficulty buttons */
+    .btn-primary:hover,
+    .btn-warning:hover,
+    .btn-danger:hover {
+      box-shadow: 0 0 1px transparent; /* Change to 1px on hover */
+    }
+
+    /* Active state for difficulty buttons */
+    .btn-primary:active,
+    .btn-warning:active,
+    .btn-danger:active {
+      box-shadow: 0 0 4px transparent; /* Change to 4px when clicked */
     }
 
     .container {
@@ -112,11 +130,11 @@
         <p id="remaining-tries">Remaining Tries: 10</p>
         <p id="score">Score: 0</p>
         <p id="game-over-message">Game Over! You've run out of tries.</p>
-        <p id="congratulations-message">Congratulations! You've matched all pairs!</p>
-        <button class="btn btn-primary btn-lg" onclick="changeDifficulty('easy')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Easy</button>
-        <button class="btn btn-warning btn-lg" onclick="changeDifficulty('normal')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Normal</button>
-        <button class="btn btn-danger btn-lg" onclick="changeDifficulty('hard')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Hard</button>
-      </div><br>
+        <p id="congratulations-message">Congratulations! You've matched all pairs!</p><br>
+        <button class="btn btn-primary btn-lg" onclick="changeDifficulty('easy')">Easy</button>
+        <button class="btn btn-warning btn-lg" onclick="changeDifficulty('normal')">Normal</button>
+        <button class="btn btn-danger btn-lg" onclick="changeDifficulty('hard')">Hard</button>
+      </div><br><br>
       <div class="row" id="game-board"></div>
     </div>
   </div>
