@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,6 @@
       color: white;
     }
 
-    
     .card {
       width: 150px;
       height: 150px;
@@ -40,7 +40,7 @@
       padding-top: 5px;
       padding-bottom: 5px;
       background-color: black;
-      transition: opacity 0.5s ease; 
+      transition: opacity 0.5s ease;
     }
 
     .card img {
@@ -51,37 +51,53 @@
 
     h2 {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 45px;
       text-align: center;
       color: rgb(2, 164, 2);
       background-color: black;
       padding: 15px 20px;
-      border: 1px solid rgb(2, 164, 2);
+      border: 5px solid rgb(2, 164, 2);
+      border-radius: 100px;
+      box-shadow: 0 0 100px rgb(2, 164, 2);
+     
     }
 
-    #congratulations-message, #game-over-message {
+    #congratulations-message,
+    #game-over-message {
       display: none;
       color: rgb(2, 164, 2);
       font-weight: bold;
       -webkit-text-stroke: 1px rgb(51, 84, 51);
       font-size: 40px;
     }
-    #remaining-tries, #score {
+
+    #remaining-tries,
+    #score {
       color: rgb(2, 164, 2);
       font-weight: bold;
       font-size: 40px;
       -webkit-text-stroke: 1px rgb(51, 84, 51);
     }
-   
+
     /* Bold text for difficulty buttons */
-    .btn-primary, .btn-warning, .btn-danger {
+    .btn-primary,
+    .btn-warning,
+    .btn-danger {
       font-weight: bold;
+      font-size: 24px; /* Adjust the font size */
+      padding: 15px 30px; /* Adjust the padding */
     }
 
     .container {
       justify-content: space-between;
     }
+
+    .row {
+      border: 2px solid rgb(2, 164, 2);
+    }
   </style>
 </head>
+
 <body>
 
   <video autoplay muted loop>
@@ -100,7 +116,7 @@
         <button class="btn btn-primary btn-lg" onclick="changeDifficulty('easy')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Easy</button>
         <button class="btn btn-warning btn-lg" onclick="changeDifficulty('normal')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Normal</button>
         <button class="btn btn-danger btn-lg" onclick="changeDifficulty('hard')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Hard</button>
-      </div>
+      </div><br>
       <div class="row" id="game-board"></div>
     </div>
   </div>
@@ -182,7 +198,7 @@
             updateScoreDisplay();
           } else {
             matchedPairs++;
-            score += 2; // Matching pair gives 2 points
+            score += 5; // Matching pair gives 2 points
             updateScoreDisplay();
 
             if (matchedPairs === images.length / 2) {
@@ -223,4 +239,5 @@
   </script>
 
 </body>
+
 </html>
