@@ -58,7 +58,7 @@
       border: 1px solid rgb(2, 164, 2);
     }
 
-    #congratulations-message, #game-over-message {
+    #congratulations-message, #game-over-message, #custom-message {
       display: none;
       color: rgb(2, 164, 2);
       font-weight: bold;
@@ -73,7 +73,7 @@
     }
    
     /* Bold text for difficulty buttons */
-    .btn-primary, .btn-warning, .btn-danger {
+    .btn-primary, .btn-warning, .btn-danger, .btn-info {
       font-weight: bold;
     }
 
@@ -97,9 +97,11 @@
         <p id="score">Score: 0</p>
         <p id="game-over-message">Game Over! You've run out of tries.</p>
         <p id="congratulations-message">Congratulations! You've matched all pairs!</p>
+        <p id="custom-message"></p>
         <button class="btn btn-primary btn-lg" onclick="changeDifficulty('easy')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Easy</button>
         <button class="btn btn-warning btn-lg" onclick="changeDifficulty('normal')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Normal</button>
         <button class="btn btn-danger btn-lg" onclick="changeDifficulty('hard')" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Hard</button>
+        <br><br><button class="btn btn-info btn-lg" onclick="restartGame()" style="background-color: black; color: rgb(2, 164, 2); border-color: rgb(2, 164, 2);">Restart</button>
       </div>
       <div class="row" id="game-board"></div>
     </div>
@@ -192,6 +194,11 @@
 
           if (remainingTries === 0) {
             document.getElementById('game-over-message').style.display = 'block';
+            if (score === 0) {
+              document.getElementById('custom-message').innerText = "Lol Skill Issue";
+            } else if (score >= 13 && score <= 16) {
+              document.getElementById('custom-message').innerText = "Good thing your dad didn't go to buy milk lmao";
+            }
           }
 
           firstCard = null;
@@ -209,8 +216,19 @@
       document.getElementById('remaining-tries').innerText = `Remaining Tries: ${remainingTries}`;
       document.getElementById('game-over-message').style.display = 'none';
       document.getElementById('congratulations-message').style.display = 'none';
+      document.getElementById('custom-message').innerText = ""; // Reset custom message
       matchedPairs = 0;
       score = 0; // Reset score on difficulty change
+      updateScoreDisplay();
+      initializeGame();
+    }
+
+    function restartGame() {
+      document.getElementById('game-over-message').style.display = 'none';
+      document.getElementById('congratulations-message').style.display = 'none';
+      document.getElementById('custom-message').innerText = ""; // Reset custom message
+      matchedPairs = 0;
+      score = 0;
       updateScoreDisplay();
       initializeGame();
     }
@@ -221,6 +239,5 @@
       updateScoreDisplay();
     });
   </script>
-
 </body>
 </html>
