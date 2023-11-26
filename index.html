@@ -133,6 +133,23 @@
     .minus{
       color: red;
     }
+    @keyframes bulge
+    {
+      0%, 100%
+      {
+        transform: scale(1);
+      }
+      50%
+      {
+        transform: scale(1.1);
+      }
+    }
+    h2 span
+    {
+      display: inline-block;
+      animation: bulge 1s infinite;
+    }
+
   </style>
 </head>
 
