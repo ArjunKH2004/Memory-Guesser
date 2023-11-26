@@ -55,7 +55,7 @@
       object-fit: contain;
     }
 
-    h2 {
+    h1 {
       
       font-size: 45px;
       text-align: center;
@@ -118,8 +118,20 @@
     }
 
     .row {
-      border: 10px solid rgb(2, 164, 2);
+      border: 5px solid rgb(2, 164, 2);
       border-radius: 10px;
+      box-shadow: 0 0 50px rgb(2, 164, 2);
+    }
+    h2{
+      text-align: center;
+      color: rgb(2, 164, 2);
+      font-weight: 200;
+    }
+    .plus{
+      color: rgb(13, 255, 223);
+    }
+    .minus{
+      color: red;
     }
   </style>
 </head>
@@ -133,7 +145,8 @@
 
   <div class="content">
     <div class="container">
-      <h2>AI Mindmaze: Memory Challenge</h2><br>
+      <h1>AI Mindmaze: Memory Challenge</h1><br>
+      
       <div class="text-center mt-3">
         <p id="remaining-tries">Remaining Tries: 10</p>
         <p id="score">Score: 0</p>
@@ -143,9 +156,12 @@
         <button class="btn btn-warning btn-lg" onclick="changeDifficulty('normal')">Normal</button>
         <button class="btn btn-danger btn-lg" onclick="changeDifficulty('hard')">Hard</button>
       </div><br><br>
-      <div class="row" id="game-board"></div>
+      <div class="row" id="game-board"></div><br><br>
+      <h2>Correct Guess <span class="plus">adds 5 points</span> to the score.</h2>
+      <h2>Incorrect Guess <span class="minus">deducts 1 point</span> from the score.</h2>
     </div>
   </div>
+ 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
