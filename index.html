@@ -7,9 +7,9 @@
   <title>Memory Guesser Game</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="favicon.jpg">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.jpg">
   <style>
     body {
       margin: 0;
@@ -34,19 +34,46 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: white;
+      color: black;
     }
 
     .card {
       width: 150px;
       height: 150px;
       cursor: pointer;
-      overflow: hidden;
-      padding-top: 5px;
-      padding-bottom: 5px;
+      perspective: 1000px;
       background-color: black;
-      transition: opacity 0.5s ease;
-      border: 1px solid rgb(2, 164, 2);
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
+    .card:active .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+    }
+
+    .card-front {
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotateY(0deg);
+    }
+
+    .card-back {
+      background-color: black;
+      transform: rotateY(180deg);
     }
 
     .card img {
@@ -56,7 +83,6 @@
     }
 
     h1 {
-      
       font-size: 45px;
       text-align: center;
       color: rgb(2, 164, 2);
@@ -85,7 +111,6 @@
       -webkit-text-stroke: 1px rgb(51, 84, 51);
     }
 
-    /* Bold text for difficulty buttons */
     .btn-primary,
     .btn-warning,
     .btn-danger {
@@ -95,22 +120,20 @@
       background-color: black;
       color: rgb(2, 164, 2);
       border-color: rgb(2, 164, 2);
-      box-shadow: 0 0 1px transparent; /* Initial shadow strength for all buttons */
-      transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow changes */
+      box-shadow: 0 0 1px transparent;
+      transition: box-shadow 0.3s ease;
     }
 
-    /* Hover state for difficulty buttons */
     .btn-primary:hover,
     .btn-warning:hover,
     .btn-danger:hover {
-      box-shadow: 0 0 1px transparent; /* Change to 1px on hover */
+      box-shadow: 0 0 1px transparent;
     }
 
-    /* Active state for difficulty buttons */
     .btn-primary:active,
     .btn-warning:active,
     .btn-danger:active {
-      box-shadow: 0 0 4px transparent; /* Change to 4px when clicked */
+      box-shadow: 0 0 4px transparent;
     }
 
     .container {
@@ -122,34 +145,35 @@
       border-radius: 10px;
       box-shadow: 0 0 50px rgb(2, 164, 2);
     }
-    h2{
+
+    h2 {
       text-align: center;
       color: rgb(109, 248, 109);
       font-weight: 200;
     }
-    .plus{
+
+    .plus {
       color: rgb(13, 255, 223);
     }
-    .minus{
+
+    .minus {
       color: red;
     }
-    @keyframes bulge
-    {
-      0%, 100%
-      {
+
+    @keyframes bulge {
+      0%, 100% {
         transform: scale(1);
       }
-      50%
-      {
+
+      50% {
         transform: scale(1.1);
       }
     }
-    h2 span
-    {
+
+    h2 span {
       display: inline-block;
       animation: bulge 1s infinite;
     }
-
   </style>
 </head>
 
@@ -163,7 +187,7 @@
   <div class="content">
     <div class="container">
       <h1>AI Mindmaze: Memory Challenge</h1><br>
-      
+
       <div class="text-center mt-3">
         <p id="remaining-tries">Remaining Tries: 10</p>
         <p id="score">Score: 0</p>
@@ -178,7 +202,6 @@
       <h2>Incorrect Guess <span class="minus">deducts 1 point</span> from the score.</h2>
     </div>
   </div>
- 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -196,9 +219,9 @@
     let score = 0;
 
     const images = [
-      'batman2.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
+      'batman.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
       'loki.jpg', 'superman.jpg', 'mk.jpg', 'thor.jpg',
-      'batman2.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
+      'batman.jpg', 'ca.jpg', 'ds.jpg', 'flash.jpg',
       'loki.jpg', 'superman.jpg', 'mk.jpg', 'thor.jpg'
     ];
 
@@ -223,10 +246,26 @@
         const card = document.createElement('div');
         card.classList.add('card', 'col-3');
         card.setAttribute('data-index', index);
-        card.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
-        card.addEventListener('click', function() {
+
+        const cardInner = document.createElement('div');
+        cardInner.classList.add('card-inner');
+
+        const cardFront = document.createElement('div');
+        cardFront.classList.add('card-face', 'card-front');
+        cardFront.innerHTML = '<img src="riddler.jpg" class="card-img-top" alt="Card">';
+
+        const cardBack = document.createElement('div');
+        cardBack.classList.add('card-face', 'card-back');
+        cardBack.innerHTML = `<img src="${image}" class="card-img-top" alt="Card">`;
+
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+        card.appendChild(cardInner);
+
+        card.addEventListener('click', function () {
           flipCard.call(this);
         });
+
         gameBoard.appendChild(card);
       });
     }
@@ -237,16 +276,20 @@
       }
 
       const index = this.getAttribute('data-index');
-      this.innerHTML = `<img src="${images[index]}" class="card-img-top" alt="Card">`;
+      this.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
 
       if (!firstCard) {
         firstCard = this;
       } else {
         setTimeout(() => {
-          if (images[firstCard.getAttribute('data-index')] !== images[index]) {
+          const firstCardIndex = firstCard.getAttribute('data-index');
+          const firstCardInner = firstCard.querySelector('.card-inner');
+          const secondCardInner = this.querySelector('.card-inner');
+
+          if (images[firstCardIndex] !== images[index]) {
             // If cards don't match, flip them back
-            this.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
-            firstCard.innerHTML = `<img src="riddler.jpg" class="card-img-top" alt="Card">`;
+            firstCardInner.style.transform = 'rotateY(0deg)';
+            secondCardInner.style.transform = 'rotateY(0deg)';
 
             // Update remaining tries display
             remainingTries--;
